@@ -1,5 +1,5 @@
 import pandas as pd
-from joblib import dump
+from joblib import dump, load
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
@@ -54,3 +54,24 @@ def preprocess_data(data, target_column, save_path, file_path):
     dump(preprocessor, save_path)
 
     return features_train, features_test, target_train, target_test
+
+
+def inference(data, preprocessor_path):
+    pre = load(preprocessor_path)
+    return pre.transform(data)
+
+
+if __name__ == '__main__':
+    data = pd.read_csv('../breast_cancer_data.csv')
+    target_column = 'diagnosis'
+    preprocessor_path = 'preprocessing/preprocessor.joblib'
+    output_path = 'preprocessing/processed_data.csv'
+
+    X_train_t, X_test_t, y_train, y_test = preprocess_data(
+        data=data,
+        target_column=target_column,
+        preprocessor_path=preprocessor_path,
+        output_path=output_path
+    )
+
+    print("Preprocessing complete!")
