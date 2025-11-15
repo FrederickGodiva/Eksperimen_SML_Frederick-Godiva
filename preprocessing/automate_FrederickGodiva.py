@@ -8,12 +8,14 @@ from sklearn.model_selection import train_test_split
 
 
 def preprocess_data(data, target_column, save_path, file_path):
+    data.drop(columns=['id', 'Unnamed: 32'], inplace=True)
+
     numeric_features = data.select_dtypes(
         include=['float64', 'int64']).columns.tolist()
     categorical_features = data.select_dtypes(
         include=['object']).columns.tolist()
     column_names = data.columns
-    column_names = data.columns.drop([target_column, 'id', 'Unnamed: 32'])
+    column_names = data.columns.drop([target_column])
 
     df_header = pd.DataFrame(columns=column_names)
 
@@ -42,7 +44,7 @@ def preprocess_data(data, target_column, save_path, file_path):
         ]
     )
 
-    features = data.drop(columns=[target_column])
+    features = data[column_names]
     target = data[target_column]
 
     features_train, features_test, target_train, target_test = train_test_split(
