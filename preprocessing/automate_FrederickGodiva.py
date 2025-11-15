@@ -64,14 +64,14 @@ def inference(data, preprocessor_path):
 if __name__ == '__main__':
     data = pd.read_csv('breast_cancer_data.csv')
     target_column = 'diagnosis'
-    preprocessor_path = 'preprocessing/preprocessor.joblib'
-    output_path = 'preprocessing/processed_data.csv'
+    save_path = 'preprocessing/preprocessor.joblib'
+    file_path = 'preprocessing/processed_data.csv'
 
     X_train_t, X_test_t, y_train, y_test = preprocess_data(
         data=data,
         target_column=target_column,
-        preprocessor_path=preprocessor_path,
-        output_path=output_path
+        save_path=save_path,
+        file_path=file_path
     )
 
     print("Preprocessing complete!")
