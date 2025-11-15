@@ -62,7 +62,7 @@ def inference(data, preprocessor_path):
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('../breast_cancer_data.csv')
+    data = pd.read_csv('breast_cancer_data.csv')
     target_column = 'diagnosis'
     preprocessor_path = 'preprocessing/preprocessor.joblib'
     output_path = 'preprocessing/processed_data.csv'
