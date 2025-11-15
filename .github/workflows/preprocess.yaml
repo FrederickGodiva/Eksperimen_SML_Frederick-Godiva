@@ -1,0 +1,42 @@
+name: Automatic Preprocess
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12.7
+
+      - name: Setup PIP
+        run: python3 -m pip install --upgrade pip
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Preprocess Automation
+        run: python3 preprocessing/automate_FrederickGodiva.py
+
+      - name: Commit Processed Data
+        uses: actions/add-commit@v9
+        with:
+          add: "preprocessing/processed_data.csv"
+          author_name: "github-actions[bot]"
+          author_email: "github-actions[bot]@users.noreply.github.com"
+          message: "Update pre-processed data"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
