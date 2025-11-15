@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from joblib import dump, load
 from sklearn.pipeline import Pipeline
@@ -14,8 +15,8 @@ def preprocess_data(data, target_column, save_path, file_path):
         include=['float64', 'int64']).columns.tolist()
     categorical_features = data.select_dtypes(
         include=['object']).columns.tolist()
-    column_names = data.columns
-    column_names = data.columns.drop([target_column])
+    column_names = list(data.columns)
+    column_names.remove(target_column)
 
     df_header = pd.DataFrame(columns=column_names)
 
@@ -55,8 +56,14 @@ def preprocess_data(data, target_column, save_path, file_path):
 
     dump(preprocessor, save_path)
 
-    preprocessed_data = pd.DataFrame(features_train, columns=column_names)
-    preprocessed_data = preprocessed_data.to_csv(file_path, index=False)
+    final_names = [col for col in column_names]
+    final_names.extend([target_column])
+
+    combined_train = np.column_stack((features_train, target_train))
+
+    preprocess_data = pd.DataFrame(combined_train, columns=final_names)
+
+    preprocess_data.to_csv(file_path, index=False)
 
     return features_train, features_test, target_train, target_test
 
