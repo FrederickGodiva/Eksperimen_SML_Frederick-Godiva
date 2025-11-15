@@ -53,8 +53,7 @@ def preprocess_data(data, target_column, save_path, file_path):
 
     dump(preprocessor, save_path)
 
-    preprocessed_data = pd.DataFrame(features_train).assign(
-        **{target_column: target_train.values})
+    preprocessed_data = pd.DataFrame(features_train, columns=column_names)
     preprocessed_data = preprocessed_data.to_csv(file_path, index=False)
 
     return features_train, features_test, target_train, target_test
